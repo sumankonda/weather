@@ -1,7 +1,6 @@
 const path = require('path')
 const express = require('express')
 const hbs = require('hbs')
-
 const geocode = require('./utils/geocode')
 const forecast = require('./utils/forecast')
 
@@ -43,71 +42,31 @@ app.get('/help', (req, res) => {
     })
 })
 
-// app.get('/weather', (req, res) => {
-//     console.log(req.query)
-    
-//     if (!req.query.address) {
-
-//         return res.send({
-//             error: 'You must provide an address!'
-//         })
-//     }
-//     res.send({
-//         forecast: 'It is snowing',
-//         location: 'Philadelphia',
-//         address: req.query.address
-//     })
-// })
-
 app.get('/weather', (req, res) => {
-    console.log(req.query)
-    
-    // if (!req.query.address) {
+    if (!req.query.address) {
+        return res.send({
+            error: 'You must provide an address!'
+        })
+    }
 
-    //     return res.send({
-    //         error: 'You must provide an address!'
-    //     })
-    // }
-    // res.send({
-    //     forecast: 'It is snowing',
-    //     location: 'Philadelphia',
-    //     address: req.query.address
-    // })
-
-    geocode(req.query.address, (error, data) => {
+    geocode(req.query.address, (error, { latitude, longitude, location } = {}) => {
         if (error) {
-            return res.send({
-                error
-            })
+            return res.send({ error })
         }
 
-        forecast(data.latitude, data.longitude, (error, forecastData) => {
+        forecast(latitude, longitude, (error, forecastData) => {
             if (error) {
-                return res.send({
-                    error
-                })
+                return res.send({ error })
             }
+
             res.send({
-                location: data.location,
-                forecast: forecastData
+                forecast: forecastData,
+                location,
+                address: req.query.address
             })
         })
     })
 })
-
-app.get('/products', (req,res) => {
-    if (!req.query.search) {
-        return res.send({
-            error: 'You must provide a search term'
-        })
-    } else {
-       console.log(req.query)
-       res.send({
-         products:[]
-       })
-    }
-})
-
 
 app.get('/products', (req, res) => {
     if (!req.query.search) {
