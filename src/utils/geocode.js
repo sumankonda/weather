@@ -1,7 +1,7 @@
 const request = require('request')
 
 const geocode = (address, callback) => {
-    const url = 'https://api.mapbox.com/geocoding/v5/mapbox.places/' + address + '.json?access_token=pk.eyJ1IjoiYW5kcmV3bWVhZDEiLCJhIjoiY2s5ZDBudjRmMDlxNjNvcDVmMjlzeWUwOCJ9.L2tBErkaeof9HeZalAF_5A&limit=1'
+    const url = 'https://api.mapbox.com/geocoding/v5/mapbox.places/' + address + '.json?access_token=pk.eyJ1Ijoic2t5cXV0ZSIsImEiOiJja2xzcW9xdnowMTI0Mm5vZHJmMjA5NnU1In0.0YlSSNY6Hf7oiNnrB053AA&limit=1'
 
     request({ url, json: true }, (error, { body }) => {
         if (error) {
